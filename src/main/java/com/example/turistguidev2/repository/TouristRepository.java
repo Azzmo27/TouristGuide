@@ -79,7 +79,7 @@ public class TouristRepository {
             if (attraction.getName().contains(name)){
                 attraction.setDescription(updatedAttraction.getDescription());
                 attraction.setCity(updatedAttraction.getCity());
-                attraction.setTagsList(updatedAttraction.getTagsList());
+                attraction.setTags(updatedAttraction.getTagsList());
 
                 return attraction;
             }
@@ -87,9 +87,10 @@ public class TouristRepository {
         return null;
     }
 
-    public TouristAttraction getTouristAttraction(String name){
-        for (TouristAttraction touristAttraction : touristAttractionList){
-            if (touristAttraction.getName().contains(name)){
+
+    public TouristAttraction getTouristAttractionByName(String name) {
+        for (TouristAttraction touristAttraction : touristAttractionList) {
+            if (touristAttraction.getName().contains(name)) {
                 return touristAttraction;
             }
         }

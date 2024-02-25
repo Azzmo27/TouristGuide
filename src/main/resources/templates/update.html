@@ -5,15 +5,15 @@
     <title>Update attraction</title>
 </head>
 <body>
-<form action="/attractions/updateAttraction" method="post" th:object="${updateObject}">
-    <input name="name" type="hidden" th:value="${updateObject.name}">
+<form action="/attractions/updateAttraction" method="post" th:object="${update}">
+    <input name="name" type="hidden" th:value="${update.name}">
     <p>
         <label for="updateDescription">Description</label>
-        <input id="updateDescription" type="text" name="description" th:value="${updateObject.description}">
+        <input id="updateDescription" type="text" name="description" th:value="${update.description}">
     </p>
     <p>
         <label for="updateCity">City</label>
-        <input id="updateCity" type="text" name="city" th:value="${updateObject.city}">
+        <input id="updateCity" type="text" name="city" th:value="${update.city}">
     </p>
     <div th:each="tag : ${attractionTags}">
         <input id="tagsAttraction" type="checkbox"  th:field="*{tagsList}" th:value="${tag}">

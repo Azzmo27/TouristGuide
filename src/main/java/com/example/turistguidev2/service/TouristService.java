@@ -40,6 +40,6 @@ public class TouristService {
     }
 
     public TouristAttraction getTouristAttraction(String name){
-        return touristRepository.getTouristAttraction(name);
+        return touristRepository.getTouristAttractionByName(name);
     }
 }

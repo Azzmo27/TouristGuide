@@ -5,33 +5,19 @@ public class TouristAttraction {
         private String name;
         private String description;
         private String city;
-        private List<String> tagsList;
+        private List<String> tags;
 
-        public TouristAttraction(String name, String description, String city, List<String> tagsList){
+        public TouristAttraction(String name, String description, String city, List<String> tags){
             this.name = name;
             this.description = description;
             this.city = city;
-            this.tagsList = tagsList;
+            this.tags = tags;
         }
         public TouristAttraction(){
 
         }
 
-    public String getCity() {
-            return city;
-        }
 
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public List<String> getTagsList() {
-            return tagsList;
-        }
-
-        public void setTagsList(List<String> tagsList) {
-            this.tagsList = tagsList;
-        }
 
         public String getName() {
             return name;
@@ -48,6 +34,23 @@ public class TouristAttraction {
         public void setDescription(String description) {
             this.description = description;
         }
+
+        public String getCity() {
+        return city;
+    }
+
+        public void setCity(String city) {
+        this.city = city;
+    }
+
+        public List<String> getTagsList() {
+        return tags;
+    }
+
+        public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
     }
 
 
