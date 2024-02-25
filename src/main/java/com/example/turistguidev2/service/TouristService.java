@@ -1,9 +1,7 @@
 package com.example.turistguidev2.service;
-
 import com.example.turistguidev2.model.TouristAttraction;
 import com.example.turistguidev2.repository.TouristRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 @Service
 public class TouristService {

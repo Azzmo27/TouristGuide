@@ -16,7 +16,7 @@ public class TouristController {
     }
 
     @GetMapping("")
-    public String getTouristAttractions(Model model){
+    public String getAttractions(Model model){
         model.addAttribute("attractions", touristService.getTouristAttractionList());
         return "attractionList";
     }
@@ -41,12 +41,6 @@ public class TouristController {
         return "redirect:/attractions";
     }
 
-    @GetMapping("/{name}/delete")
-    public String deleteAttraction(@PathVariable("name") String name){
-        touristService.deleteTouristAttraction(name);
-        return "redirect:/attractions";
-    }
-
     @GetMapping("/{name}/updateAttraction")
     public String updateAttration(@PathVariable("name") String name, Model model){
         TouristAttraction abc = touristService.getTouristAttraction(name);
@@ -59,6 +53,12 @@ public class TouristController {
     @PostMapping("/updateAttraction")
     public String updatedAttraction(@ModelAttribute TouristAttraction updatedTouristAttraction){
         touristService.updateAttraction(updatedTouristAttraction.getName(), updatedTouristAttraction);
+        return "redirect:/attractions";
+    }
+
+    @GetMapping("/{name}/delete")
+    public String deleteAttraction(@PathVariable("name") String name){
+        touristService.deleteTouristAttraction(name);
         return "redirect:/attractions";
     }
 }

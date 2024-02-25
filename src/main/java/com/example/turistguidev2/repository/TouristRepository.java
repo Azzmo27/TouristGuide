@@ -28,7 +28,7 @@ public class TouristRepository {
 
             new TouristAttraction("Grand Canyon",
                     "A natural wonder, with colorful landscapes and the opportunity to explore the canyon's depths through hiking and river rafting.",
-                    "Arizona (United States)", List.of( "Natural Beauty", "Adventure", "Outdoor Activities"))
+                    "Arizona (United States)", List.of("Natural Beauty", "Adventure", "Outdoor Activities"))
 
     ));
     final private List<String> attractionCities = new ArrayList<>(
@@ -38,35 +38,35 @@ public class TouristRepository {
             List.of("Historical", "Nature", "Cultural", "Family-friendly", "Free"));
 
 
-    public List<TouristAttraction> getTouristAttractionList(){
+    public List<TouristAttraction> getTouristAttractionList() {
         return touristAttractionList;
     }
 
-    public List<String> getAttractionCities(){
+    public List<String> getAttractionCities() {
         return attractionCities;
     }
 
-    public List<String> getAttractionTags(){
+    public List<String> getAttractionTags() {
         return attractionTags;
     }
 
-    public List<String> attractionTagsList(String touristAttractionName){
-        for (TouristAttraction touristAttraction : touristAttractionList){
-            if (touristAttraction.getName().contains(touristAttractionName)){
+    public List<String> attractionTagsList(String touristAttractionName) {
+        for (TouristAttraction touristAttraction : touristAttractionList) {
+            if (touristAttraction.getName().contains(touristAttractionName)) {
                 return touristAttraction.getTagsList();
             }
         }
         return null;
     }
 
-    public List<TouristAttraction> addTouristAttraction(TouristAttraction touristAttraction){
+    public List<TouristAttraction> addTouristAttraction(TouristAttraction touristAttraction) {
         touristAttractionList.add(touristAttraction);
         return touristAttractionList;
     }
 
-    public List<TouristAttraction> deleteTouristAttraction(String name){
-        for (TouristAttraction attraction: touristAttractionList){
-            if (attraction.getName().contains(name)){
+    public List<TouristAttraction> deleteTouristAttraction(String name) {
+        for (TouristAttraction attraction : touristAttractionList) {
+            if (attraction.getName().contains(name)) {
                 touristAttractionList.remove(attraction);
                 return touristAttractionList;
             }
@@ -95,7 +95,6 @@ public class TouristRepository {
         }
         return null;
     }
-
 
 
 }
