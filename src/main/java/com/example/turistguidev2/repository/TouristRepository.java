@@ -1,8 +1,10 @@
 package com.example.turistguidev2.repository;
 
 import com.example.turistguidev2.model.TouristAttraction;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,9 +76,9 @@ public class TouristRepository {
         return null;
     }
 
-    public TouristAttraction updateAttraction(String name, TouristAttraction updatedAttraction){
-        for (TouristAttraction attraction: touristAttractionList){
-            if (attraction.getName().contains(name)){
+    public TouristAttraction updateAttraction(String name, TouristAttraction updatedAttraction) {
+        for (TouristAttraction attraction : touristAttractionList) {
+            if (attraction.getName().contains(name)) {
                 attraction.setDescription(updatedAttraction.getDescription());
                 attraction.setCity(updatedAttraction.getCity());
                 attraction.setTags(updatedAttraction.getTagsList());
@@ -87,7 +89,6 @@ public class TouristRepository {
         return null;
     }
 
-
     public TouristAttraction getTouristAttractionByName(String name) {
         for (TouristAttraction touristAttraction : touristAttractionList) {
             if (touristAttraction.getName().contains(name)) {
@@ -96,6 +97,5 @@ public class TouristRepository {
         }
         return null;
     }
-
 
 }
