@@ -1,8 +1,9 @@
 package com.example.turistguidev2.repository;
 
 import com.example.turistguidev2.model.TouristAttraction;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,32 +11,21 @@ import java.util.List;
 @Repository
 public class RepositoryData {
 
-    @Value("${spring.datasource.url}")
-    private String dbUrl;
+    @Autowired
+    private ConnectionManager connectionManager;
 
-    @Value("${spring.datasource.username}")
-    private String dbUsername;
-
-    @Value("${spring.datasource.password}")
-    private String dbPassword;
-
-    // Opret en forbindelse til databasen
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
-    }
-
-    // Henter alle turistattraktioner fra databasen
     public List<TouristAttraction> getTouristAttractionList() {
         List<TouristAttraction> attractions = new ArrayList<>();
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM TouristAttraction")) {
-            while (rs.next()) {
+        String selectQuery = "SELECT * FROM touristAttraction";
+        try (Connection connection = connectionManager.getConnection();
+             Statement stmt = connection.createStatement();
+             ResultSet result = stmt.executeQuery(selectQuery)) {
+            while (result.next()) {
                 TouristAttraction attraction = new TouristAttraction(
-                        rs.getString("name"),
-                        rs.getString("description"),
-                        rs.getString("city"),
-                        List.of(rs.getString("tag"))
+                        result.getString("name"),
+                        result.getString("description"),
+                        result.getString("city"),
+                        getAttractionTags(result.getString("name"))
                 );
                 attractions.add(attraction);
             }
@@ -44,15 +34,15 @@ public class RepositoryData {
         }
         return attractions;
     }
-    public List<String> attractionTagList(String name) {
-        List<String> tags = new ArrayList<>();
-        String SQL = "SELECT tag.tagName FROM tag " +
-                "JOIN tourist_attraction_tag ON tourist_attraction.touristID = tourist_attraction_tag.touristID " +
-                "JOIN tag ON tourist_attraction_tag.tagID = tag.tagID " +
-                "WHERE tourist_attraction.name = ?;";
 
-        try (Connection connection1 = getConnection();
-             PreparedStatement ps = connection1.prepareStatement(SQL)) {
+    public List<String> getAttractionTags(String name) {
+        List<String> tags = new ArrayList<>();
+        String selectTagsQuery = "SELECT tag.tagName FROM tag " +
+                "JOIN tourist_attraction_tag ON tag.tagID = tourist_attraction_tag.tagID " +
+                "JOIN tourist_attraction ON tourist_attraction.touristID = tourist_attraction_tag.touristID " +
+                "WHERE tourist_attraction.name = ?";
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement ps = connection.prepareStatement(selectTagsQuery)) {
             ps.setString(1, name);
             try (ResultSet result = ps.executeQuery()) {
                 while (result.next()) {
@@ -60,11 +50,67 @@ public class RepositoryData {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return tags;
     }
 
+    public void createTouristAttraction(TouristAttraction touristAttraction) {
+        String insertQuery = "INSERT INTO tourist_attraction (name, description, city) VALUES (?, ?, ?)";
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement ps = connection.prepareStatement(insertQuery)) {
+            ps.setString(1, touristAttraction.getName());
+            ps.setString(2, touristAttraction.getDescription());
+            ps.setString(3, touristAttraction.getCity());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-    // Andre CRUD-operationer (tilføj, slet, opdater, osv.) kan implementeres på samme måde.
+    public void deleteTouristAttraction(String name) {
+        String deleteQuery = "DELETE FROM tourist_attraction WHERE name = ?";
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement ps = connection.prepareStatement(deleteQuery)) {
+            ps.setString(1, name);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateAttraction(String name, TouristAttraction updatedAttraction) {
+        String updateQuery = "UPDATE tourist_attraction SET description = ?, city = ? WHERE name = ?";
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement ps = connection.prepareStatement(updateQuery)) {
+            ps.setString(1, updatedAttraction.getDescription());
+            ps.setString(2, updatedAttraction.getCity());
+            ps.setString(3, name);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public TouristAttraction getTouristAttractionByName(String name) {
+        TouristAttraction attraction = null;
+        String selectQuery = "SELECT * FROM tourist_attraction WHERE name = ?";
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement ps = connection.prepareStatement(selectQuery)) {
+            ps.setString(1, name);
+            try (ResultSet result = ps.executeQuery()) {
+                if (result.next()) {
+                    attraction = new TouristAttraction(
+                            result.getString("name"),
+                            result.getString("description"),
+                            result.getString("city"),
+                            getAttractionTags(name)
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return attraction;
+    }
 }
