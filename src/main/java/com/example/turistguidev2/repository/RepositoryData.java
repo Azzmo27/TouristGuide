@@ -1,17 +1,15 @@
 package com.example.turistguidev2.repository;
 
 import com.example.turistguidev2.model.TouristAttraction;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 @Repository
 public class RepositoryData {
 
-    @Autowired
     private ConnectionManager connectionManager;
 
     public List<TouristAttraction> getTouristAttractionList() {
