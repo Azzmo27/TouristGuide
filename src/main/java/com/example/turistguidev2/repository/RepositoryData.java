@@ -1,12 +1,11 @@
 package com.example.turistguidev2.repository;
 
 import com.example.turistguidev2.model.TouristAttraction;
-
 import org.springframework.stereotype.Repository;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 @Repository
 public class RepositoryData {
 
@@ -14,7 +13,7 @@ public class RepositoryData {
 
     public List<TouristAttraction> getTouristAttractionList() {
         List<TouristAttraction> attractions = new ArrayList<>();
-        String selectQuery = "SELECT * FROM touristAttraction";
+        String selectQuery = "SELECT * FROM TouristAttraction";
         try (Connection connection = connectionManager.getConnection();
              Statement stmt = connection.createStatement();
              ResultSet result = stmt.executeQuery(selectQuery)) {
@@ -35,16 +34,16 @@ public class RepositoryData {
 
     public List<String> getAttractionTags(String name) {
         List<String> tags = new ArrayList<>();
-        String selectTagsQuery = "SELECT tag.tagName FROM tag " +
-                "JOIN tourist_attraction_tag ON tag.tagID = tourist_attraction_tag.tagID " +
-                "JOIN tourist_attraction ON tourist_attraction.touristID = tourist_attraction_tag.touristID " +
-                "WHERE tourist_attraction.name = ?";
+        String selectTagsQuery = "SELECT tag.name FROM Tag " +
+                "JOIN Tourist_Attraction_Tag ON Tag.tag_ID = Tourist_Attraction_Tag.tag_ID " +
+                "JOIN TouristAttraction ON TouristAttraction.touristAttractionID = Tourist_Attraction_Tag.touristAttraction_ID " +
+                "WHERE TouristAttraction.name = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement ps = connection.prepareStatement(selectTagsQuery)) {
             ps.setString(1, name);
             try (ResultSet result = ps.executeQuery()) {
                 while (result.next()) {
-                    tags.add(result.getString("tagName"));
+                    tags.add(result.getString("name"));
                 }
             }
         } catch (SQLException e) {
@@ -54,7 +53,7 @@ public class RepositoryData {
     }
 
     public void createTouristAttraction(TouristAttraction touristAttraction) {
-        String insertQuery = "INSERT INTO tourist_attraction (name, description, city) VALUES (?, ?, ?)";
+        String insertQuery = "INSERT INTO TouristAttraction (name, description, city) VALUES (?, ?, ?)";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement ps = connection.prepareStatement(insertQuery)) {
             ps.setString(1, touristAttraction.getName());
@@ -67,7 +66,7 @@ public class RepositoryData {
     }
 
     public void deleteTouristAttraction(String name) {
-        String deleteQuery = "DELETE FROM tourist_attraction WHERE name = ?";
+        String deleteQuery = "DELETE FROM TouristAttraction WHERE name = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement ps = connection.prepareStatement(deleteQuery)) {
             ps.setString(1, name);
@@ -78,7 +77,7 @@ public class RepositoryData {
     }
 
     public void updateAttraction(String name, TouristAttraction updatedAttraction) {
-        String updateQuery = "UPDATE tourist_attraction SET description = ?, city = ? WHERE name = ?";
+        String updateQuery = "UPDATE TouristAttraction SET description = ?, city = ? WHERE name = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement ps = connection.prepareStatement(updateQuery)) {
             ps.setString(1, updatedAttraction.getDescription());
@@ -92,7 +91,7 @@ public class RepositoryData {
 
     public TouristAttraction getTouristAttractionByName(String name) {
         TouristAttraction attraction = null;
-        String selectQuery = "SELECT * FROM tourist_attraction WHERE name = ?";
+        String selectQuery = "SELECT * FROM TouristAttraction WHERE name = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement ps = connection.prepareStatement(selectQuery)) {
             ps.setString(1, name);
