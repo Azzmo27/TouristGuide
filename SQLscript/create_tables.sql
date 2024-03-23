@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS Tourist_Attraction_Tag(
 touristAttraction_ID int,
 tag_ID int,
 foreign key(touristAttraction_ID) references Tourist_Attraction (touristAttraction_ID),
-foreign key(tag_ID) references tag(tag_ID) 
+foreign key(tag_ID) references tag(tag_ID)
 );
 
 
