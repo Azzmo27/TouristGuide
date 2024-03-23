@@ -78,5 +78,5 @@ public class TouristControllerTest {
         verify(touristService).addTouristAttraction(attraction);
     }
 
-    // You can similarly write tests for other methods like updateAttraction and deleteAttraction
+
 }
