@@ -17,8 +17,6 @@ public class TouristAttraction {
 
         }
 
-
-
         public String getName() {
             return name;
         }
