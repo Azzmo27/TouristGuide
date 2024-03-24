@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS TouristAttraction(
 Attraction_ID int auto_increment,
 name VARCHAR(50) unique,
 description VARCHAR(300),
-city int,
+city VARCHAR(50),
 primary key(touristAttractionID),
 foreign key(city_ID) references city(city_ID)
 );
